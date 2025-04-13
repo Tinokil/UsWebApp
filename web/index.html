@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iMAX Pro</title>
+    <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка профиля -->
+        <header class="profile-header">
+            <img src="" class="avatar" id="userAvatar">
+            <div class="profile-info">
+                <h1 id="userName"></h1>
+                <div class="badge" id="userLevel"></div>
+            </div>
+        </header>
+
+        <!-- Основные показатели -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="balance">0 ₽</div>
+                <div class="stat-label">Баланс</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="cashback">0 ₽</div>
+                <div class="stat-label">Кэшбэк</div>
+            </div>
+        </section>
+
+        <!-- Навигационное меню -->
+        <nav class="nav-grid">
+            <button class="nav-btn" data-section="orders">📦 Мои заказы</button>
+            <button class="nav-btn" data-section="payments">💳 Платежи</button>
+            <button class="nav-btn" data-section="settings">⚙️ Настройки</button>
+            <button class="nav-btn" data-section="support">🛎 Поддержка</button>
+        </nav>
+
+        <!-- Секции контента -->
+        <section class="content-section" id="orders">
+            <h2>📦 Активные заказы</h2>
+            <div class="orders-list" id="ordersList"></div>
+        </section>
+
+        <section class="content-section" id="payments" style="display: none;">
+            <h2>💳 История платежей</h2>
+            <div class="payments-list" id="paymentsList"></div>
+        </section>
+
+        <section class="content-section" id="settings" style="display: none;">
+            <h2>⚙️ Настройки</h2>
+            <div class="settings-item">
+                <span>🔔 Уведомления</span>
+                <label class="switch">
+                    <input type="checkbox" id="notifications">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settings-item">
+                <span>🌙 Темная тема</span>
+                <label class="switch">
+                    <input type="checkbox" id="darkTheme">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </section>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
