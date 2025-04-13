@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Telegram WebApp</title>
     <style>
         * {
             margin: 0;
@@ -14,97 +14,122 @@
         body {
             color: var(--tg-theme-text-color);
             background: var(--tg-theme-bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
         }
 
-        .Main {
-            width: 100%;
-            padding: 25px;
-            text-align: center;
-
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         h1 {
-            margin-top: 40px;
-            margin-bottom: 10px;
+            margin: 20px 0;
+            text-align: center;
         }
 
         img {
-            width: 70px;
-            margin: 30px auto;
+            display: block;
+            width: 100px;
+            margin: 20px auto;
         }
 
         .btn {
-            border: 0;
-            border-radius: 5px;
-            margin-top: 50px;
-            height: 60px;
-            width: 200px;
-            font-style: 20px;
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             color: var(--tg-theme-button-text-color);
             background: var(--tg-theme-button-color);
         }
 
-        form {
+        .form-group {
+            margin-bottom: 15px;
             display: none;
-            text-align: center;
         }
-        
-        input {
-            outline: none;
-            border-radius: 5px;
-            border: 2px solid #535353;
-            padding: 15px 10px;
-            margin: 10px 0 0;
-            background: var(--tg-theme-section-separator-color);
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid var(--tg-theme-secondary-bg-color);
+            border-radius: 10px;
+            background: var(--tg-theme-secondary-bg-color);
             color: var(--tg-theme-text-color);
-            transition: all .2s;
         }
-        
-        input:focus {
-            border-color: var(--tg-theme-secondary-bg-color)
+
+        .user-data {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--tg-theme-secondary-bg-color);
+            border-radius: 10px;
+            display: none;
         }
-        
     </style>
 </head>
 <body>
-    <div class="Main">
+    <div class="container">
         <h1>Тестовое приложение</h1>
-        <img src="{{ url_for('static', filename='bot.png') }}" alt="">
-        <p></p>
-        <button class="btn f-btn">Тест отправки данных</button>
+        <img src="bot.png" alt="Logo" id="logo">
+        
+        <button class="btn" id="showFormBtn">Показать форму</button>
+        <button class="btn" id="showUserDataBtn">Мои данные</button>
+        
+        <div class="form-group" id="formContainer">
+            <input type="text" id="titleInput" placeholder="Заголовок">
+            <input type="text" id="descInput" placeholder="Описание">
+            <textarea id="textInput" placeholder="Текст" rows="4"></textarea>
+            <button class="btn" id="submitFormBtn">Отправить</button>
+        </div>
+        
+        <div class="user-data" id="userDataContainer"></div>
     </div>
-    <form class="test-form">    
-        <input type="text" placeholder="Введите заголовок" class="title-inp">
-        <input type="text" placeholder="Введите описание" class="desc-inp">
-        <input type="text" placeholder="Введите текст" class="text-inp">
-        <button class="btn s-btn">Отправить</button>
-    </form>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
+        // Инициализация WebApp
         const tg = window.Telegram.WebApp;
+        tg.expand(); // Раскрываем на весь экран
         
-        // Показываем данные пользователя
-        document.querySelector('.user-btn').addEventListener('click', () => {
+        // Элементы DOM
+        const logo = document.getElementById('logo');
+        const showFormBtn = document.getElementById('showFormBtn');
+        const showUserDataBtn = document.getElementById('showUserDataBtn');
+        const formContainer = document.getElementById('formContainer');
+        const userDataContainer = document.getElementById('userDataContainer');
+        const submitFormBtn = document.getElementById('submitFormBtn');
+        
+        // Проверка элементов
+        if (!showFormBtn || !showUserDataBtn || !formContainer || !userDataContainer || !submitFormBtn) {
+            console.error('Не найдены необходимые элементы DOM');
+        }
+        
+        // Обработчики событий
+        showFormBtn.addEventListener('click', () => {
+            formContainer.style.display = 'block';
+            userDataContainer.style.display = 'none';
+        });
+        
+        showUserDataBtn.addEventListener('click', () => {
             const user = tg.initDataUnsafe.user;
-            const userDataElement = document.getElementById('userData');
+            userDataContainer.style.display = 'block';
+            formContainer.style.display = 'none';
             
             if (user) {
-                let userDataHTML = `
+                userDataContainer.innerHTML = `
                     <h3>Ваши данные:</h3>
                     <p><b>ID:</b> ${user.id}</p>
                     <p><b>Имя:</b> ${user.first_name || 'Не указано'}</p>
                     ${user.last_name ? `<p><b>Фамилия:</b> ${user.last_name}</p>` : ''}
                     ${user.username ? `<p><b>Username:</b> @${user.username}</p>` : ''}
-                    ${user.language_code ? `<p><b>Язык:</b> ${user.language_code}</p>` : ''}
                     <p><b>Платформа:</b> ${tg.platform}</p>
-                    <p><b>Цветовая схема:</b> ${tg.colorScheme}</p>
+                    <p><b>Тема:</b> ${tg.colorScheme}</p>
                 `;
-                
-                userDataElement.innerHTML = userDataHTML;
-                userDataElement.style.display = 'block';
                 
                 // Отправляем данные в бота
                 tg.sendData(JSON.stringify({
@@ -112,33 +137,35 @@
                     data: user
                 }));
             } else {
-                userDataElement.innerHTML = '<p>Данные пользователя недоступны</p>';
-                userDataElement.style.display = 'block';
+                userDataContainer.innerHTML = '<p>Данные пользователя недоступны</p>';
             }
         });
-
-        let fBtn = document.getElementsByClassName("f-btn")[0]
-        let sBtn = document.getElementsByClassName("s-btn")[0]
-
-        fBtn.addEventListener("click", () => {
-            document.getElementsByClassName("Main")[0].style.display = "none";
-            document.getElementsByClassName("test-form")[0].style.display = "block";
-        });
-
-        sBtn.addEventListener("click", () => {
-            let title = document.getElementsByClassName("title-inp")[0];
-            let description = document.getElementsByClassName("desc-inp")[0];
-            let text = document.getElementsByClassName("text-inp")[0];
-
+        
+        submitFormBtn.addEventListener('click', () => {
+            const title = document.getElementById('titleInput').value;
+            const desc = document.getElementById('descInput').value;
+            const text = document.getElementById('textInput').value;
             
-            let data = {
-                title: title.value,
-                desc: description.value,    
-                text: text.value
+            if (title && desc && text) {
+                tg.sendData(JSON.stringify({
+                    type: 'form_data',
+                    data: { title, desc, text }
+                }));
+            } else {
+                tg.showAlert('Заполните все поля!');
             }
-
-            tg.sendData(JSON.stringify(data));
         });
+        
+        // Обработка закрытия WebApp
+        tg.onEvent('viewportChanged', () => {
+            tg.expand();
+        });
+        
+        // Убедимся, что изображение загружено
+        logo.onerror = () => {
+            console.error('Не удалось загрузить изображение');
+            logo.style.display = 'none';
+        };
     </script>
 </body>
 </html>
