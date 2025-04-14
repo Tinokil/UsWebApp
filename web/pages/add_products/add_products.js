@@ -24,6 +24,7 @@ function updatePreview() {
 
 function getFormData() {
     return {
+        type: "add_products",
         model: document.getElementById('model').value,
         category: document.getElementById('category').value,
         memory: document.getElementById('memory').value,
