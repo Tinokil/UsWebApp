@@ -1,0 +1,190 @@
+@import url(../main.css);
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: var(--tg-bg);
+    color: var(--tg-text);
+    padding: 12px;
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--tg-section-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transform: translateY(0);
+    animation: slideUp 0.4s ease;
+}
+
+.header {
+    background: var(--tg-header-bg);
+    color: var(--tg-button-text);
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 1.4rem;
+    position: relative;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--tg-button) 0%, #006699 100%);
+}
+
+.form-section {
+    padding: 1.2rem;
+    border-bottom: 1px solid var(--tg-section-separator);
+    background: var(--tg-section-bg);
+    transition: transform 0.3s ease;
+    animation: fadeIn 0.4s ease backwards;
+}
+
+.form-section:hover {
+    transform: translateY(-2px);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+    color: var(--tg-subtitle-text);
+}
+
+.emoji {
+    font-size: 1.4rem;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+}
+
+.form-grid {
+    display: grid;
+    gap: 1.2rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.form-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 0.85rem;
+    color: var(--tg-subtitle-text);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.9rem;
+    border: 2px solid var(--tg-section-separator);
+    border-radius: var(--radius);
+    background: var(--tg-secondary-bg);
+    color: var(--tg-text);
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--tg-button);
+    box-shadow: 0 0 0 3px rgba(68, 143, 255, 0.2);
+    outline: none;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+}
+
+.checkbox-container:hover {
+    background: rgba(255,255,255,0.03);
+}
+
+.checkbox-container input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--tg-button);
+    flex-shrink: 0;
+}
+
+.preview-section {
+    background: var(--tg-secondary-bg);
+    padding: 1.2rem;
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+    border: 2px solid var(--tg-section-separator);
+}
+
+.preview-title {
+    font-size: 1.1rem;
+    color: var(--tg-link);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .header {
+        font-size: 1.2rem;
+        padding: 1.2rem;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: none;
+        margin: 1rem 0;
+        padding: 14px;
+    }
+    
+    .form-section {
+        padding: 1rem;
+    }
+}
+
+input:hover, select:hover, textarea:hover {
+    border-color: var(--tg-button);
+}
+
+.checkbox-container input:hover {
+    transform: scale(1.05);
+}
+
+.disable {
+    background-color: var(--tg-destructive-text);
+}

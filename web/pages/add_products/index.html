@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление товара</title>
+    <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
+    <link rel="stylesheet" href="add_products.css">
+    <script src="add_products.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            Добавление нового товара
+        </header>
+        
+        <form id="productForm">
+            <!-- Основная информация -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="emoji">📱</span> Основная информация
+                </div>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label for="category">Категория</label>
+                        <select id="category" required>
+                            <option value="" disabled selected>Выберите категорию</option>
+                            <option value="Smartphones">Смартфоны</option>
+                            <option value="Headphones">Наушники</option>
+                            <option value="Clock">Часы</option>
+                            <option value="Tablets">Планшеты</option>
+                            <option value="Laptops">Ноутбуки</option>
+                            <option value="Accessories">Аксессуары</option>
+                            <option value="Other">Другое</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="model">Модель</label>
+                        <input type="text" id="model" placeholder="Например: iPhone 13" required>
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="condition">Состояние</label>
+                        <select id="condition" required>
+                            <option value="new">Новое</option>
+                            <option value="new">Отличное</option>
+                            <option value="like_new">Хорошее</option>
+                            <option value="good">Удовлетворительное</option>
+                            <option value="satisfactory">Требуется ремонт</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Цены -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="emoji">💰</span> Цены
+                </div>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label for="price">Цена продажи (₽)</label>
+                        <input type="number" id="price" placeholder="45 000" required>
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="discount">Скидка (%)</label>
+                        <input type="number" id="discount" placeholder="5" min="0" max="100">
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="original_price">Закупочная цена (₽)</label>
+                        <input type="number" id="original_price" placeholder="40 000" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Характеристики -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="emoji">📋</span> Характеристики
+                </div>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label for="memory">Память (ГБ)</label>
+                        <input type="number" id="memory" placeholder="128">
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="color">Цвет</label>
+                        <input type="text" id="color" placeholder="Черный">
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="battery">Батарея (%)</label>
+                        <input type="number" id="battery" placeholder="99" min="0" max="100">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Описание -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="emoji">📝</span> Описание товара
+                </div>
+                <textarea id="description" placeholder="Подробное описание товара, особенности, комплектация..."></textarea>
+            </div>
+            
+            <!-- Локация и доставка -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="emoji">📍</span> Локация и доставка
+                </div>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label for="location">Место</label>
+                        <input type="text" id="location" placeholder="Московская обл., Подольск" required>
+                    </div>
+                </div>
+                
+                <div class="delivery-options">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="delivery_possible" checked>
+                        <label for="delivery_possible">Доставка</label>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="meetup_possible" checked>
+                        <label for="meetup_possible">Самовывоз</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Публикация -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="emoji">📢</span> Публикация
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="publish_avito" checked>
+                    <label for="publish_avito">Опубликовать на Авито</label>
+                </div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="publish_telegram" checked>
+                    <label for="publish_telegram">Опубликовать в Telegram-канал</label>
+                </div>
+            </div>
+            
+            <!-- Предпросмотр -->
+            <div class="preview-section">
+                <div class="preview-title">Предпросмотр объявления</div>
+                <div id="previewContent"></div>
+            </div>
+            
+            <!-- Кнопки действий -->
+
+            <button class="btn" onclick="submitForm()">
+                🚀 Опубликовать
+            </button>
+
+        </form>
+    </div>
+</body>
+</html>
