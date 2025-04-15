@@ -2,6 +2,15 @@ const tg = window.Telegram.WebApp;
 let formIsValid = false;
 
 function initApp() {
+    if (!tg.initDataUnsafe) {
+        // Если запуск не из Telegram, добавляем fallback
+        document.addEventListener('DOMContentLoaded', setupApp);
+        return;
+    }
+    setupApp();
+}
+
+function setupApp() {
     tg.ready();
     tg.expand();
     
@@ -18,29 +27,42 @@ function initApp() {
 
 function updatePreview() {
     const formData = getFormData();
-    document.getElementById('previewContent').innerHTML = generatePreviewHTML(formData);
+    const previewElement = document.getElementById('previewContent');
+    if (previewElement) {
+        previewElement.innerHTML = generatePreviewHTML(formData);
+    }
     validateForm(formData);
 }
 
 function getFormData() {
     return {
         type: "add_products",
-        model: document.getElementById('model').value,
-        category: document.getElementById('category').value,
-        memory: document.getElementById('memory').value,
-        price: document.getElementById('price').value,
-        discount: document.getElementById('discount').value,
-        original_price: document.getElementById('original_price').value,
-        condition: document.getElementById('condition').value,
-        color: document.getElementById('color').value,
-        battery: document.getElementById('battery').value,
-        location: document.getElementById('location').value,
-        delivery: document.getElementById('delivery_possible').checked,
-        meetup: document.getElementById('meetup_possible').checked,
-        publish_avito: document.getElementById('publish_avito').checked,
-        publish_telegram: document.getElementById('publish_telegram').checked,
-        description: document.getElementById('description').value
+        model: getValue('model'),
+        category: getValue('category'),
+        memory: getValue('memory'),
+        price: getValue('price'),
+        discount: getValue('discount'),
+        original_price: getValue('original_price'),
+        condition: getValue('condition'),
+        color: getValue('color'),
+        battery: getValue('battery'),
+        location: getValue('location'),
+        delivery: getChecked('delivery_possible'),
+        meetup: getChecked('meetup_possible'),
+        publish_avito: getChecked('publish_avito'),
+        publish_telegram: getChecked('publish_telegram'),
+        description: getValue('description')
     };
+}
+
+function getValue(id) {
+    const element = document.getElementById(id);
+    return element ? element.value : null;
+}
+
+function getChecked(id) {
+    const element = document.getElementById(id);
+    return element ? element.checked : false;
 }
 
 function generatePreviewHTML(data) {
@@ -86,10 +108,12 @@ function validateForm(data) {
     if (formIsValid) {
         tg.MainButton.setText('🚀 Опубликовать');
         tg.MainButton.show().enable();
-        document.querySelector('.btn').classList.add('active');
+        const btn = document.querySelector('.btn');
+        if (btn) btn.classList.add('active');
     } else {
         tg.MainButton.hide();
-        document.querySelector('.btn').classList.remove('active');
+        const btn = document.querySelector('.btn');
+        if (btn) btn.classList.remove('active');
     }
 }
 
@@ -109,7 +133,7 @@ function formatPrice(price) {
 }
 
 function truncateDescription(text, maxLength = 100) {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+    return text && text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
 
 function setupEventListeners() {
@@ -125,14 +149,21 @@ function setupEventListeners() {
     });
     
     ['delivery_possible', 'meetup_possible', 'publish_avito', 'publish_telegram'].forEach(id => {
-        document.getElementById(id).addEventListener('change', updatePreview);
+        const element = document.getElementById(id);
+        if (element) element.addEventListener('change', updatePreview);
     });
     
-    tg.MainButton.onClick(submitForm);
-    document.querySelector('.btn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        submitForm();
-    });
+    if (tg.MainButton) {
+        tg.MainButton.onClick(submitForm);
+    }
+    
+    const btn = document.querySelector('.btn');
+    if (btn) {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            submitForm();
+        });
+    }
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
+initApp();
