@@ -75,6 +75,7 @@ class ProductForm {
       const getChecked = id => document.getElementById(id)?.checked || false;
   
       return {
+        type: "add_products",
         model: getValue('model'),
         category: getValue('category'),
         memory: getValue('memory'),
